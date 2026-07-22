@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  /* Premium dark palette shared across CDS local tools.
+     Dark-only design: no light variant. */
+  --color-bg: #0b0b0d;
+  --color-panel: #0f0f11;
+  --color-panel-2: #131316;
+  --color-line: rgba(255, 255, 255, 0.07);
+  --color-line-strong: rgba(255, 255, 255, 0.12);
+  --color-txt: #f4f4f5;
+  --color-muted: #9b9ba3;
+  --color-faint: #5b5b63;
+  --color-orange: #ff6b00;
+  --color-orange-mid: #ff8c33;
+  --color-orange-light: #ffb066;
+  --color-orange-soft: rgba(255, 107, 0, 0.14);
+  --color-green: #7fd6a8;
+  --color-red: #ff8f8f;
+  --color-blue: #9cc4ff;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/*
+ * Bespoke multi-stop / radial gradients the Tailwind from/via/to utilities
+ * cannot express (more than 3 stops, explicit angles). Kept as real
+ * stylesheet rules loaded under `style-src 'self'` — never as inline
+ * `style="..."` attributes, which the strict CSP's `style-src-attr`
+ * directive does not universally allow (Safari has no support for it).
+ */
+.hero-halo::before {
+  content: "";
+  position: absolute;
+  inset: -40% -20% auto;
+  height: 130%;
+  background: radial-gradient(52% 42% at 50% 8%, rgba(255, 107, 0, 0.16), transparent 62%);
+  pointer-events: none;
+}
+
+/* Gradient border used on the main simulator card (radius 22px). The
+ * wrapper carries the gradient; a 1px inset child holds the panel surface. */
+.gradient-border {
+  background: linear-gradient(
+    140deg,
+    rgba(255, 107, 0, 0.55),
+    rgba(255, 107, 0, 0.08) 38%,
+    rgba(255, 255, 255, 0.06) 62%,
+    rgba(255, 107, 0, 0.3)
+  );
+}
+
+.panel-glow {
+  background:
+    radial-gradient(90% 70% at 50% 0%, rgba(255, 107, 0, 0.07), transparent 55%),
+    var(--color-panel);
+}

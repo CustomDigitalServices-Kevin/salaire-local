@@ -1,0 +1,47 @@
+{
+  "date": "2026-07-22",
+  "last_review": "2026-07-22",
+  "source": "urssaf.fr + legisocial + agirc-arrco circulaire 2025-16",
+  "annee": 2026,
+  "plafonds": {
+    "pmss": 4005,
+    "pass": 48060
+  },
+  "tranches": {
+    "t2_plafond_pmss": 8,
+    "csg_plafond_pmss": 4,
+    "apec_plafond_pmss": 4
+  },
+  "csg_crds": {
+    "assiette_ratio": 0.9825,
+    "abattement": 0.0175,
+    "csg_deductible": 0.068,
+    "csg_non_deductible": 0.024,
+    "crds": 0.005
+  },
+  "salarie": {
+    "vieillesse_plafonnee": 0.069,
+    "vieillesse_deplafonnee": 0.004,
+    "agirc_arrco_t1": 0.0315,
+    "agirc_arrco_t2": 0.0864,
+    "ceg_t1": 0.0086,
+    "ceg_t2": 0.0108,
+    "cet": 0.0014,
+    "apec": 0.00024,
+    "maladie_alsace_moselle": 0.013
+  },
+  "micro": {
+    "activites": {
+      "vente_marchandises_bic": { "taux": 0.123, "a_reverifier": false },
+      "prestations_services_bic": { "taux": 0.212, "a_reverifier": false },
+      "liberal_general_bnc": { "taux": 0.256, "a_reverifier": true },
+      "liberal_cipav_bnc": { "taux": 0.232, "a_reverifier": false }
+    },
+    "acre_reduction": 0.5
+  },
+  "portage": {
+    "ratio_bas": 0.45,
+    "ratio_central": 0.5,
+    "ratio_haut": 0.55
+  }
+}

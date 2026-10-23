@@ -67,6 +67,19 @@ describe("computeMicro - published ACRE rates by creation period", () => {
     expect(r.cotisations).toBe(7950);
   });
 
+  it("rounds half-cent ACRE sales contributions before calculating net", () => {
+    const r = computeMicro({
+      caEncaisse: 5,
+      activite: "vente_marchandises_bic",
+      acre: true,
+      periodeCreation: "a_partir_2026_07_01",
+    });
+
+    expect(r.taux).toBe(0.093);
+    expect(r.cotisations).toBe(0.47);
+    expect(r.net).toBe(4.53);
+  });
+
   it.each([
     { activite: "vente_marchandises_bic", periodeCreation: "avant_2026_07_01", taux: 0.062, cotisations: 620, net: 9380 },
     { activite: "prestations_services_bic", periodeCreation: "avant_2026_07_01", taux: 0.106, cotisations: 1060, net: 8940 },

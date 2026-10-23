@@ -99,6 +99,43 @@ describe("MicroCalculator", () => {
     expect(screen.queryByRole("group", { name: "Date de création ou de reprise" })).not.toBeInTheDocument();
   });
 
+  it("focuses and activates both creation-period buttons from the keyboard", async () => {
+    const user = userEvent.setup();
+    renderCalculator();
+
+    await user.tab();
+    expect(screen.getByLabelText("Chiffre d'affaires encaissé")).toHaveFocus();
+    await user.keyboard("10000");
+    await user.tab();
+    expect(screen.getByLabelText("Activité")).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole("checkbox", { name: /ACRE/ })).toHaveFocus();
+    await user.keyboard(" ");
+
+    const periods = screen.getByRole("group", { name: "Date de création ou de reprise" });
+    const before = within(periods).getByRole("button", { name: "Avant le 1er juillet 2026" });
+    const since = within(periods).getByRole("button", { name: "À partir du 1er juillet 2026" });
+    const results = screen.getByTestId("micro-results");
+    expect(before).toHaveAttribute("aria-pressed", "false");
+    expect(since).toHaveAttribute("aria-pressed", "true");
+
+    await user.tab();
+    expect(before).toHaveFocus();
+    await user.keyboard(" ");
+    expect(before).toHaveFocus();
+    expect(before).toHaveAttribute("aria-pressed", "true");
+    expect(since).toHaveAttribute("aria-pressed", "false");
+    expect(within(results).getByText("10,6 %")).toBeInTheDocument();
+
+    await user.tab();
+    expect(since).toHaveFocus();
+    await user.keyboard("{Enter}");
+    expect(since).toHaveFocus();
+    expect(since).toHaveAttribute("aria-pressed", "true");
+    expect(before).toHaveAttribute("aria-pressed", "false");
+    expect(within(results).getByText("15,9 %")).toBeInTheDocument();
+  });
+
   it.each([
     {
       language: "fr-FR",

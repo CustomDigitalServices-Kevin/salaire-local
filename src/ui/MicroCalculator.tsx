@@ -83,6 +83,10 @@ export function MicroCalculator(): ReactElement {
         />
         {acre && (
           <>
+            <div className="flex flex-col gap-1 text-[11.5px] text-muted">
+              <p>{t("micro.acre.duration")}</p>
+              <p>{t("micro.acre.scope")}</p>
+            </div>
             <SegmentedControl
               legend={t("micro.acre.creation.label")}
               options={periodeOptions}

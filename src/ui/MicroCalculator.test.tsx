@@ -196,6 +196,46 @@ describe("MicroCalculator", () => {
     }
   });
 
+  it.each([
+    {
+      language: "fr-FR",
+      turnoverLabel: "Chiffre d'affaires encaissé",
+      beforeLabel: "Avant le 1er juillet 2026",
+      sinceLabel: "À partir du 1er juillet 2026",
+      duration: "Taux réduit jusqu'à la fin du 3e trimestre civil qui suit le début d'activité.",
+      scope: "Le simulateur ne proratise pas : le résultat suppose que tout le chiffre d'affaires saisi relève de la période à taux réduit.",
+    },
+    {
+      language: "en-GB",
+      turnoverLabel: "Cashed-in turnover",
+      beforeLabel: "Before 1 July 2026",
+      sinceLabel: "On or after 1 July 2026",
+      duration: "Reduced rate until the end of the third calendar quarter after the business starts.",
+      scope: "The simulator does not prorate: the result assumes all entered turnover falls within the reduced-rate period.",
+    },
+  ])("shows the ACRE duration and turnover scope only while enabled in both periods in $language", async ({ language, turnoverLabel, beforeLabel, sinceLabel, duration, scope }) => {
+    vi.spyOn(window.navigator, "languages", "get").mockReturnValue([language]);
+    const user = userEvent.setup();
+    renderCalculator();
+    expect(screen.queryByText(duration)).not.toBeInTheDocument();
+    expect(screen.queryByText(scope)).not.toBeInTheDocument();
+
+    await user.type(screen.getByLabelText(turnoverLabel), "10000");
+    const acreCheckbox = screen.getByRole("checkbox", { name: /ACRE/ });
+    for (const periodLabel of [sinceLabel, beforeLabel]) {
+      await user.click(acreCheckbox);
+      const periodButton = screen.getByRole("button", { name: periodLabel });
+      await user.click(periodButton);
+      expect(periodButton).toHaveAttribute("aria-pressed", "true");
+      expect(screen.getByText(duration)).toBeInTheDocument();
+      expect(screen.getByText(scope)).toBeInTheDocument();
+
+      await user.click(acreCheckbox);
+      expect(screen.queryByText(duration)).not.toBeInTheDocument();
+      expect(screen.queryByText(scope)).not.toBeInTheDocument();
+    }
+  });
+
   it("surfaces a French error on an invalid turnover", async () => {
     const user = userEvent.setup();
     renderCalculator();

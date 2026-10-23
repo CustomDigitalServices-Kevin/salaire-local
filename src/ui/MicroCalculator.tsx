@@ -42,6 +42,12 @@ export function MicroCalculator(): ReactElement {
     { value: "a_partir_2026_07_01", label: t("micro.acre.creation.since") },
   ];
 
+  const acreRate = baremes.micro.acre.taux[periodeCreation][activite];
+  const acreHintKey = periodeCreation === "avant_2026_07_01"
+    ? "micro.acre.hint.before"
+    : "micro.acre.hint.since";
+  const acreHint = `${t(acreHintKey)} ${formatPercent(acreRate.taux, locale)}.`;
+
   const result = useMemo<MicroResult | null>(() => {
     if (caValue === null) return null;
     return computeMicro({ caEncaisse: caValue, activite, acre, periodeCreation });
@@ -71,7 +77,7 @@ export function MicroCalculator(): ReactElement {
         />
         <Toggle
           label={t("micro.acre.label")}
-          hint={t(periodeCreation === "avant_2026_07_01" ? "micro.acre.hint.before" : "micro.acre.hint.since")}
+          hint={acreHint}
           checked={acre}
           onChange={setAcre}
         />
@@ -84,7 +90,7 @@ export function MicroCalculator(): ReactElement {
               onChange={setPeriodeCreation}
             />
             <a
-              href={baremes.micro.acre.source.url}
+              href={`${acreRate.source.url}#page=${String(acreRate.source.page)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-[11.5px] text-faint underline hover:text-txt"

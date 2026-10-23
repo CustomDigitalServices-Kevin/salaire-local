@@ -82,14 +82,19 @@ export interface SalarieResult {
   tauxGlobalCharges: number;
 }
 
+/** Creation or takeover period relative to the ACRE reform effective on 2026-07-01. */
+export type MicroPeriodeCreation = "avant_2026_07_01" | "a_partir_2026_07_01";
+
 /** Inputs for the micro-entrepreneur social-contribution estimate. */
 export interface MicroInput {
   /** Cashed-in turnover for the period, in euros (>= 0). */
   caEncaisse: number;
   /** Activity category, selects the forfaitaire rate. */
   activite: MicroActivite;
-  /** ACRE first-year 50 % reduction. */
+  /** True while the user benefits from the ACRE exemption. */
   acre?: boolean;
+  /** Creation or takeover period; defaults to on or after 2026-07-01. */
+  periodeCreation?: MicroPeriodeCreation;
 }
 
 /** Result of the micro-entrepreneur estimate (social contributions only). */

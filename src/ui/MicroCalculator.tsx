@@ -1,10 +1,16 @@
 import { useMemo, useState } from "react";
 import type { ReactElement } from "react";
-import { computeMicro, type MicroActivite, type MicroResult } from "../lib";
+import {
+  baremes,
+  computeMicro,
+  type MicroActivite,
+  type MicroPeriodeCreation,
+  type MicroResult,
+} from "../lib";
 import { useLocale } from "../i18n/locale-context";
 import { formatEuros, formatPercent, parseAmount } from "./number-format";
 import { MICRO_ACTIVITE_LABEL_KEYS, MICRO_ACTIVITES } from "./labels";
-import { AmountField, SelectField, Toggle } from "./fields";
+import { AmountField, SegmentedControl, SelectField, Toggle } from "./fields";
 import type { SegmentedOption } from "./fields";
 
 /** Micro-entrepreneur social-contribution estimate: turnover × forfaitaire rate by activity. */
@@ -14,6 +20,7 @@ export function MicroCalculator(): ReactElement {
   const [caRaw, setCaRaw] = useState("");
   const [activite, setActivite] = useState<MicroActivite>("prestations_services_bic");
   const [acre, setAcre] = useState(false);
+  const [periodeCreation, setPeriodeCreation] = useState<MicroPeriodeCreation>("a_partir_2026_07_01");
 
   const caParse = parseAmount(caRaw);
   const caError =
@@ -30,10 +37,15 @@ export function MicroCalculator(): ReactElement {
     label: t(MICRO_ACTIVITE_LABEL_KEYS[value]),
   }));
 
+  const periodeOptions: SegmentedOption<MicroPeriodeCreation>[] = [
+    { value: "avant_2026_07_01", label: t("micro.acre.creation.before") },
+    { value: "a_partir_2026_07_01", label: t("micro.acre.creation.since") },
+  ];
+
   const result = useMemo<MicroResult | null>(() => {
     if (caValue === null) return null;
-    return computeMicro({ caEncaisse: caValue, activite, acre });
-  }, [caValue, activite, acre]);
+    return computeMicro({ caEncaisse: caValue, activite, acre, periodeCreation });
+  }, [caValue, activite, acre, periodeCreation]);
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
@@ -59,10 +71,28 @@ export function MicroCalculator(): ReactElement {
         />
         <Toggle
           label={t("micro.acre.label")}
-          hint={t("micro.acre.hint")}
+          hint={t(periodeCreation === "avant_2026_07_01" ? "micro.acre.hint.before" : "micro.acre.hint.since")}
           checked={acre}
           onChange={setAcre}
         />
+        {acre && (
+          <>
+            <SegmentedControl
+              legend={t("micro.acre.creation.label")}
+              options={periodeOptions}
+              value={periodeCreation}
+              onChange={setPeriodeCreation}
+            />
+            <a
+              href={baremes.micro.acre.source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11.5px] text-faint underline hover:text-txt"
+            >
+              {t("micro.acre.source")}
+            </a>
+          </>
+        )}
         <p className="text-[11.5px] text-faint">{t("micro.note")}</p>
       </form>
 

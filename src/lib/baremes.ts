@@ -54,7 +54,17 @@ export interface Baremes {
   };
   micro: {
     activites: Record<MicroActivite, MicroActiviteRate>;
-    acre_reduction: number;
+    acre: {
+      /** Inclusive creation or takeover date for the new exemption rate. */
+      date_effet: string;
+      taux_exoneration_avant: number;
+      taux_exoneration_a_partir: number;
+      source: {
+        url: string;
+        decret: string;
+      };
+      last_review: string;
+    };
   };
   portage: {
     ratio_bas: number;

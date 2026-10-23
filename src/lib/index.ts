@@ -27,6 +27,7 @@ export type {
   CotisationLine,
   MicroActivite,
   MicroInput,
+  MicroPeriodeCreation,
   MicroResult,
   PortageInput,
   PortageResult,

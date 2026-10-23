@@ -32,8 +32,8 @@ describe("computeMicro — cotisations forfaitaires par activité", () => {
   });
 });
 
-describe("computeMicro - dated ACRE exemption", () => {
-  it("charges 75% of the full rate for a creation or takeover on or after 2026-07-01", () => {
+describe("computeMicro - published ACRE rates by creation period", () => {
+  it("charges the published services BIC rate on or after 2026-07-01", () => {
     const input = {
       caEncaisse: 50000,
       activite: "prestations_services_bic" as const,
@@ -41,13 +41,13 @@ describe("computeMicro - dated ACRE exemption", () => {
       periodeCreation: "a_partir_2026_07_01" as const,
     };
     const r = computeMicro(input);
-    expect(r.taux).toBe(0.212 * 0.75);
+    expect(r.taux).toBe(0.159);
     expect(r.acreApplique).toBe(true);
     expect(r.cotisations).toBe(7950);
     expect(r.net).toBe(42050);
   });
 
-  it("charges 50% of the full rate for a creation or takeover before 2026-07-01", () => {
+  it("charges the published services BIC rate before 2026-07-01", () => {
     const input = {
       caEncaisse: 50000,
       activite: "prestations_services_bic" as const,
@@ -55,7 +55,7 @@ describe("computeMicro - dated ACRE exemption", () => {
       periodeCreation: "avant_2026_07_01" as const,
     };
     const r = computeMicro(input);
-    expect(r.taux).toBe(0.212 * 0.5);
+    expect(r.taux).toBe(0.106);
     expect(r.acreApplique).toBe(true);
     expect(r.cotisations).toBe(5300);
     expect(r.net).toBe(44700);
@@ -68,17 +68,37 @@ describe("computeMicro - dated ACRE exemption", () => {
   });
 
   it.each([
+    { activite: "vente_marchandises_bic", periodeCreation: "avant_2026_07_01", taux: 0.062, cotisations: 620, net: 9380 },
+    { activite: "prestations_services_bic", periodeCreation: "avant_2026_07_01", taux: 0.106, cotisations: 1060, net: 8940 },
+    { activite: "liberal_general_bnc", periodeCreation: "avant_2026_07_01", taux: 0.128, cotisations: 1280, net: 8720 },
+    { activite: "liberal_cipav_bnc", periodeCreation: "avant_2026_07_01", taux: 0.134, cotisations: 1340, net: 8660 },
+    { activite: "vente_marchandises_bic", periodeCreation: "a_partir_2026_07_01", taux: 0.093, cotisations: 930, net: 9070 },
+    { activite: "prestations_services_bic", periodeCreation: "a_partir_2026_07_01", taux: 0.159, cotisations: 1590, net: 8410 },
+    { activite: "liberal_general_bnc", periodeCreation: "a_partir_2026_07_01", taux: 0.192, cotisations: 1920, net: 8080 },
+    { activite: "liberal_cipav_bnc", periodeCreation: "a_partir_2026_07_01", taux: 0.174, cotisations: 1740, net: 8260 },
+  ] as const)("uses URSSAF's published rate for $activite / $periodeCreation", ({ activite, periodeCreation, taux, cotisations, net }) => {
+    // URSSAF, Diaporama_Auto-entrepreneur.pdf, April 2026, pages 16 and 17.
+    const r = computeMicro({ caEncaisse: 10000, activite, acre: true, periodeCreation });
+    expect(r.taux).toBe(taux);
+    expect(r.cotisations).toBe(cotisations);
+    expect(r.net).toBe(net);
+    expect(r.acreApplique).toBe(true);
+    if (periodeCreation === "a_partir_2026_07_01") {
+      expect(computeMicro({ caEncaisse: 10000, activite, acre: true }).taux).toBe(taux);
+    }
+  });
+
+  it.each([
     { activite: "vente_marchandises_bic", tauxPlein: 0.123 },
     { activite: "prestations_services_bic", tauxPlein: 0.212 },
     { activite: "liberal_general_bnc", tauxPlein: 0.256 },
     { activite: "liberal_cipav_bnc", tauxPlein: 0.232 },
-  ] as const)("applies the selected exemption to $activite", ({ activite, tauxPlein }) => {
+  ] as const)("keeps the full rate without ACRE for $activite in either period", ({ activite, tauxPlein }) => {
     const before = { caEncaisse: 10000, activite, acre: true, periodeCreation: "avant_2026_07_01" as const };
     const since = { ...before, periodeCreation: "a_partir_2026_07_01" as const };
-    expect(computeMicro(before).taux).toBe(tauxPlein * 0.5);
-    expect(computeMicro(since).taux).toBe(tauxPlein * 0.75);
     expect(computeMicro({ ...before, acre: false }).taux).toBe(tauxPlein);
     expect(computeMicro({ ...since, acre: false }).taux).toBe(tauxPlein);
+    expect(computeMicro({ caEncaisse: 10000, activite }).taux).toBe(tauxPlein);
   });
 
   it("keeps zero turnover at zero with ACRE enabled", () => {

@@ -56,16 +56,36 @@ describe("baremes.json — micro-entrepreneur", () => {
 
   it("dates and sources the ACRE exemption change", () => {
     expect(baremes.last_review).toBe("2026-10-23");
-    expect(baremes.micro).toHaveProperty("acre", {
+    expect(baremes.micro.acre).toMatchObject({
       date_effet: "2026-07-01",
-      taux_exoneration_avant: 0.5,
-      taux_exoneration_a_partir: 0.25,
       source: {
         url: "https://entreprendre.service-public.gouv.fr/actualites/A18795",
+        date_page: "2026-02-11",
         decret: "Décret n° 2026-69 du 6 février 2026",
       },
       last_review: "2026-10-23",
     });
     expect(baremes.micro).not.toHaveProperty("acre_reduction");
+  });
+
+  it.each([
+    { activite: "vente_marchandises_bic", periode: "avant_2026_07_01", taux: 0.062, page: 16 },
+    { activite: "prestations_services_bic", periode: "avant_2026_07_01", taux: 0.106, page: 16 },
+    { activite: "liberal_general_bnc", periode: "avant_2026_07_01", taux: 0.128, page: 16 },
+    { activite: "liberal_cipav_bnc", periode: "avant_2026_07_01", taux: 0.134, page: 16 },
+    { activite: "vente_marchandises_bic", periode: "a_partir_2026_07_01", taux: 0.093, page: 17 },
+    { activite: "prestations_services_bic", periode: "a_partir_2026_07_01", taux: 0.159, page: 17 },
+    { activite: "liberal_general_bnc", periode: "a_partir_2026_07_01", taux: 0.192, page: 17 },
+    { activite: "liberal_cipav_bnc", periode: "a_partir_2026_07_01", taux: 0.174, page: 17 },
+  ])("sources the published ACRE rate for $activite / $periode", ({ activite, periode, taux, page }) => {
+    expect(baremes.micro.acre).toHaveProperty(`taux.${periode}.${activite}`, {
+      taux,
+      source: {
+        url: "https://www.urssaf.fr/files/live/sites/urssaffr/files/autres/Diaporama_Auto-entrepreneur.pdf",
+        date_page: "2026-04",
+        page,
+      },
+      last_review: "2026-10-23",
+    });
   });
 });

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { computePortage } from "./portage";
 
-describe("computePortage — fourchette indicative", () => {
+describe("computePortage - fourchette indicative", () => {
   it("estime le net central à 50 % du CA HT et encadre 45–55 %", () => {
     const r = computePortage({ caHT: 100000 });
     expect(r.netEstime).toBe(50000);

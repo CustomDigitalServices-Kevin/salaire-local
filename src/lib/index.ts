@@ -1,6 +1,6 @@
 /**
  * Public API of the salaire brut/net engine.
- * Pure TypeScript, no UI dependency — consumed by the React layer and tests.
+ * Pure TypeScript, no UI dependency - consumed by the React layer and tests.
  */
 export { computeSalarie } from "./salarie";
 export {

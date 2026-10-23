@@ -5,7 +5,7 @@ import type { SalarieDirection } from "./salarie-controller";
 /**
  * Maps each engine enum to its i18n message key. Declared as exhaustive
  * `Record`s so adding a new contribution / activity fails to compile until a
- * label is provided — no silent "missing translation" at runtime.
+ * label is provided - no silent "missing translation" at runtime.
  */
 
 export const COTISATION_LABEL_KEYS: Record<CotisationKey, MessageKey> = {

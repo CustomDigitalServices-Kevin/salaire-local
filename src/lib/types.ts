@@ -1,6 +1,6 @@
 /**
  * Public domain types for the salaire brut/net engine.
- * No UI or framework dependency — safe to import from tests and workers.
+ * No UI or framework dependency - safe to import from tests and workers.
  */
 
 /** Micro-entrepreneur activity categories keyed to `baremes.json.micro.activites`. */
@@ -53,7 +53,7 @@ export interface SalarieInput {
   /**
    * Personalised withholding-tax rate (prélèvement à la source), decimal 0..1.
    * When provided, `netApresImpot` and `impotPAS` are computed. No family
-   * quotient recomputation is performed — the rate is used verbatim.
+   * quotient recomputation is performed - the rate is used verbatim.
    */
   tauxPAS?: number;
 }

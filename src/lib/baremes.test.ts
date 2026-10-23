@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { APEC_PLAFOND, CSG_PLAFOND, PMSS, T2_PLAFOND, baremes } from "./baremes";
 
-describe("baremes.json — frontmatter de veille", () => {
+describe("baremes.json - frontmatter de veille", () => {
   it("porte une date et une last_review au format ISO", () => {
     expect(baremes.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     expect(baremes.last_review).toMatch(/^\d{4}-\d{2}-\d{2}$/);
@@ -10,7 +10,7 @@ describe("baremes.json — frontmatter de veille", () => {
   });
 });
 
-describe("baremes.json — plafonds et tranches 2026", () => {
+describe("baremes.json - plafonds et tranches 2026", () => {
   it("expose PMSS 4005 et PASS 48060", () => {
     expect(PMSS).toBe(4005);
     expect(baremes.plafonds.pass).toBe(48060);
@@ -23,7 +23,7 @@ describe("baremes.json — plafonds et tranches 2026", () => {
   });
 });
 
-describe("baremes.json — taux salariés 2026", () => {
+describe("baremes.json - taux salariés 2026", () => {
   it("aligne les taux sur la spec URSSAF/AGIRC-ARRCO", () => {
     expect(baremes.salarie.vieillesse_plafonnee).toBe(0.069);
     expect(baremes.salarie.vieillesse_deplafonnee).toBe(0.004);
@@ -45,7 +45,7 @@ describe("baremes.json — taux salariés 2026", () => {
   });
 });
 
-describe("baremes.json — micro-entrepreneur", () => {
+describe("baremes.json - micro-entrepreneur", () => {
   it("porte les 4 taux d'activité et flag le libéral BNC général", () => {
     expect(baremes.micro.activites.vente_marchandises_bic.taux).toBe(0.123);
     expect(baremes.micro.activites.prestations_services_bic.taux).toBe(0.212);

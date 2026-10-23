@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { computeMicro } from "./micro";
 
-describe("computeMicro — cotisations forfaitaires par activité", () => {
+describe("computeMicro - cotisations forfaitaires par activité", () => {
   it("prestations de services BIC à 21,2 %", () => {
     const r = computeMicro({ caEncaisse: 50000, activite: "prestations_services_bic" });
     expect(r.tauxPlein).toBe(0.212);
@@ -108,7 +108,7 @@ describe("computeMicro - published ACRE rates by creation period", () => {
   });
 });
 
-describe("computeMicro — validation", () => {
+describe("computeMicro - validation", () => {
   it("gère un CA nul", () => {
     const r = computeMicro({ caEncaisse: 0, activite: "vente_marchandises_bic" });
     expect(r.cotisations).toBe(0);

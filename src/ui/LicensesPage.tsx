@@ -1,8 +1,8 @@
 import type { ReactElement } from "react";
 import { useLocale } from "../i18n/locale-context";
 
-// Runtime dependencies only (build tooling — Vite, TypeScript, ESLint,
-// Vitest, Playwright — is not bundled and is out of scope here).
+// Runtime dependencies only (build tooling - Vite, TypeScript, ESLint,
+// Vitest, Playwright - is not bundled and is out of scope here).
 // `covers` maps a display row to the package names it credits.
 export interface RuntimeLicenseEntry {
   name: string;

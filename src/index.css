@@ -24,7 +24,7 @@
 /*
  * Bespoke multi-stop / radial gradients the Tailwind from/via/to utilities
  * cannot express (more than 3 stops, explicit angles). Kept as real
- * stylesheet rules loaded under `style-src 'self'` — never as inline
+ * stylesheet rules loaded under `style-src 'self'` - never as inline
  * `style="..."` attributes, which the strict CSP's `style-src-attr`
  * directive does not universally allow (Safari has no support for it).
  */

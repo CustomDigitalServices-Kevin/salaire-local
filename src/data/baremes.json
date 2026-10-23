@@ -1,6 +1,6 @@
 {
   "date": "2026-07-22",
-  "last_review": "2026-07-22",
+  "last_review": "2026-10-23",
   "source": "urssaf.fr + legisocial + agirc-arrco circulaire 2025-16",
   "annee": 2026,
   "plafonds": {
@@ -37,7 +37,93 @@
       "liberal_general_bnc": { "taux": 0.256, "a_reverifier": true },
       "liberal_cipav_bnc": { "taux": 0.232, "a_reverifier": false }
     },
-    "acre_reduction": 0.5
+    "acre": {
+      "date_effet": "2026-07-01",
+      "source": {
+        "url": "https://entreprendre.service-public.gouv.fr/actualites/A18795",
+        "date_page": "2026-02-11",
+        "decret": "Décret n° 2026-69 du 6 février 2026"
+      },
+      "taux": {
+        "avant_2026_07_01": {
+          "vente_marchandises_bic": {
+            "taux": 0.062,
+            "source": {
+              "url": "https://www.urssaf.fr/files/live/sites/urssaffr/files/autres/Diaporama_Auto-entrepreneur.pdf",
+              "date_page": "2026-04",
+              "page": 16
+            },
+            "last_review": "2026-10-23"
+          },
+          "prestations_services_bic": {
+            "taux": 0.106,
+            "source": {
+              "url": "https://www.urssaf.fr/files/live/sites/urssaffr/files/autres/Diaporama_Auto-entrepreneur.pdf",
+              "date_page": "2026-04",
+              "page": 16
+            },
+            "last_review": "2026-10-23"
+          },
+          "liberal_general_bnc": {
+            "taux": 0.128,
+            "source": {
+              "url": "https://www.urssaf.fr/files/live/sites/urssaffr/files/autres/Diaporama_Auto-entrepreneur.pdf",
+              "date_page": "2026-04",
+              "page": 16
+            },
+            "last_review": "2026-10-23"
+          },
+          "liberal_cipav_bnc": {
+            "taux": 0.134,
+            "source": {
+              "url": "https://www.urssaf.fr/files/live/sites/urssaffr/files/autres/Diaporama_Auto-entrepreneur.pdf",
+              "date_page": "2026-04",
+              "page": 16
+            },
+            "last_review": "2026-10-23"
+          }
+        },
+        "a_partir_2026_07_01": {
+          "vente_marchandises_bic": {
+            "taux": 0.093,
+            "source": {
+              "url": "https://www.urssaf.fr/files/live/sites/urssaffr/files/autres/Diaporama_Auto-entrepreneur.pdf",
+              "date_page": "2026-04",
+              "page": 17
+            },
+            "last_review": "2026-10-23"
+          },
+          "prestations_services_bic": {
+            "taux": 0.159,
+            "source": {
+              "url": "https://www.urssaf.fr/files/live/sites/urssaffr/files/autres/Diaporama_Auto-entrepreneur.pdf",
+              "date_page": "2026-04",
+              "page": 17
+            },
+            "last_review": "2026-10-23"
+          },
+          "liberal_general_bnc": {
+            "taux": 0.192,
+            "source": {
+              "url": "https://www.urssaf.fr/files/live/sites/urssaffr/files/autres/Diaporama_Auto-entrepreneur.pdf",
+              "date_page": "2026-04",
+              "page": 17
+            },
+            "last_review": "2026-10-23"
+          },
+          "liberal_cipav_bnc": {
+            "taux": 0.174,
+            "source": {
+              "url": "https://www.urssaf.fr/files/live/sites/urssaffr/files/autres/Diaporama_Auto-entrepreneur.pdf",
+              "date_page": "2026-04",
+              "page": 17
+            },
+            "last_review": "2026-10-23"
+          }
+        }
+      },
+      "last_review": "2026-10-23"
+    }
   },
   "portage": {
     "ratio_bas": 0.45,

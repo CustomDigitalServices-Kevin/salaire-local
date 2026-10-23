@@ -3,7 +3,7 @@ import { bisect, brutFromNetAPayer, brutFromNetImposable } from "./inversion";
 import { computeSalarie } from "./salarie";
 import { round2 } from "./rounding";
 
-describe("bisect — solveur générique monotone", () => {
+describe("bisect - solveur générique monotone", () => {
   it("inverse une fonction affine croissante au centime", () => {
     const x = bisect(100, (v) => v * 0.8);
     expect(x).toBeCloseTo(125, 2);
@@ -18,7 +18,7 @@ describe("bisect — solveur générique monotone", () => {
   });
 });
 
-describe("brutFromNetAPayer — round-trip brut→net→brut", () => {
+describe("brutFromNetAPayer - round-trip brut→net→brut", () => {
   const contexts = [
     { label: "non-cadre", ctx: { cadre: false } as const },
     { label: "cadre", ctx: { cadre: true } as const },
@@ -44,7 +44,7 @@ describe("brutFromNetAPayer — round-trip brut→net→brut", () => {
   });
 });
 
-describe("brutFromNetImposable — round-trip sur le net imposable", () => {
+describe("brutFromNetImposable - round-trip sur le net imposable", () => {
   it("retrouve un brut dont le net imposable correspond", () => {
     const ctx = { cadre: true } as const;
     const cible = computeSalarie({ ...ctx, brutMensuel: 4200 }).netImposable;

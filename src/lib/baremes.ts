@@ -1,5 +1,5 @@
 import baremesData from "../data/baremes.json";
-import type { MicroActivite } from "./types";
+import type { MicroActivite, MicroPeriodeCreation } from "./types";
 
 /**
  * Typed view over `src/data/baremes.json`.
@@ -11,6 +11,19 @@ import type { MicroActivite } from "./types";
 export interface MicroActiviteRate {
   taux: number;
   a_reverifier: boolean;
+}
+
+/** Published ACRE rate, excluding CFP and optional income tax. */
+export interface MicroAcreRate {
+  taux: number;
+  source: {
+    url: string;
+    /** Publication date at the publisher's precision: YYYY-MM or YYYY-MM-DD. */
+    date_page: string;
+    /** One-based page number in the source PDF. */
+    page: number;
+  };
+  last_review: string;
 }
 
 export interface Baremes {
@@ -54,7 +67,17 @@ export interface Baremes {
   };
   micro: {
     activites: Record<MicroActivite, MicroActiviteRate>;
-    acre_reduction: number;
+    acre: {
+      /** Inclusive creation or takeover date for the new published rates. */
+      date_effet: string;
+      source: {
+        url: string;
+        date_page: string;
+        decret: string;
+      };
+      taux: Record<MicroPeriodeCreation, Record<MicroActivite, MicroAcreRate>>;
+      last_review: string;
+    };
   };
   portage: {
     ratio_bas: number;

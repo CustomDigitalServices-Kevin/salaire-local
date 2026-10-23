@@ -8,7 +8,7 @@ function findLine(lines: readonly CotisationLine[], key: CotisationKey): Cotisat
   return lines.find((c) => c.key === key);
 }
 
-describe("computeSalarie — non-cadre sous 1 PMSS (brut 3000)", () => {
+describe("computeSalarie - non-cadre sous 1 PMSS (brut 3000)", () => {
   const r = computeSalarie({ brutMensuel: 3000, cadre: false });
 
   it("émet exactement les 7 lignes applicables (ni T2, ni CET, ni APEC)", () => {
@@ -48,7 +48,7 @@ describe("computeSalarie — non-cadre sous 1 PMSS (brut 3000)", () => {
   });
 });
 
-describe("computeSalarie — assiettes par tranche", () => {
+describe("computeSalarie - assiettes par tranche", () => {
   it("borne T1 à 1 PMSS et calcule T2 entre 1 et 8 PMSS", () => {
     const r = computeSalarie({ brutMensuel: 5000, cadre: false });
     expect(findLine(r.cotisations, "agirc_arrco_t1")?.assiette).toBe(PMSS);
@@ -70,7 +70,7 @@ describe("computeSalarie — assiettes par tranche", () => {
   });
 });
 
-describe("computeSalarie — CET uniquement au-dessus de 1 PMSS", () => {
+describe("computeSalarie - CET uniquement au-dessus de 1 PMSS", () => {
   it("n'émet pas de CET quand brut <= 1 PMSS", () => {
     const r = computeSalarie({ brutMensuel: PMSS, cadre: false });
     expect(findLine(r.cotisations, "cet")).toBeUndefined();
@@ -84,7 +84,7 @@ describe("computeSalarie — CET uniquement au-dessus de 1 PMSS", () => {
   });
 });
 
-describe("computeSalarie — statut cadre", () => {
+describe("computeSalarie - statut cadre", () => {
   it("ajoute l'APEC pour un cadre", () => {
     const cadre = computeSalarie({ brutMensuel: 3000, cadre: true });
     expect(findLine(cadre.cotisations, "apec")?.montant).toBe(0.72);
@@ -98,7 +98,7 @@ describe("computeSalarie — statut cadre", () => {
   });
 });
 
-describe("computeSalarie — options", () => {
+describe("computeSalarie - options", () => {
   it("ajoute la maladie salariale Alsace-Moselle sur tout le brut", () => {
     const r = computeSalarie({ brutMensuel: 3000, cadre: false, alsaceMoselle: true });
     expect(findLine(r.cotisations, "maladie_alsace_moselle")?.montant).toBe(39);
@@ -118,7 +118,7 @@ describe("computeSalarie — options", () => {
   });
 });
 
-describe("computeSalarie — taux salariés abrogés jamais émis", () => {
+describe("computeSalarie - taux salariés abrogés jamais émis", () => {
   it("n'émet ni maladie standard ni chômage salarial", () => {
     const r = computeSalarie({ brutMensuel: 6000, cadre: true });
     const keys = r.cotisations.map((c) => c.key);
@@ -127,7 +127,7 @@ describe("computeSalarie — taux salariés abrogés jamais émis", () => {
   });
 });
 
-describe("computeSalarie — cas limites et validation", () => {
+describe("computeSalarie - cas limites et validation", () => {
   it("retourne un net nul et un taux 0 pour un brut de 0", () => {
     const r = computeSalarie({ brutMensuel: 0, cadre: false });
     expect(r.cotisations).toEqual([]);

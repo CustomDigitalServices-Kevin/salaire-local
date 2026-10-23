@@ -3,7 +3,7 @@ import type { Locale } from "../i18n/messages";
 /**
  * Locale-aware formatting and input parsing for the salary simulator.
  *
- * Pure functions, no DOM/React dependency — unit-tested in isolation. The UI
+ * Pure functions, no DOM/React dependency - unit-tested in isolation. The UI
  * keeps raw strings in state and calls these to derive numbers (parse) and to
  * render results (format), so every euro/percent shown on screen goes through
  * one audited path.

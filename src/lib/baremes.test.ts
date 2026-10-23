@@ -52,6 +52,20 @@ describe("baremes.json — micro-entrepreneur", () => {
     expect(baremes.micro.activites.liberal_general_bnc.taux).toBe(0.256);
     expect(baremes.micro.activites.liberal_general_bnc.a_reverifier).toBe(true);
     expect(baremes.micro.activites.liberal_cipav_bnc.taux).toBe(0.232);
-    expect(baremes.micro.acre_reduction).toBe(0.5);
+  });
+
+  it("dates and sources the ACRE exemption change", () => {
+    expect(baremes.last_review).toBe("2026-10-23");
+    expect(baremes.micro).toHaveProperty("acre", {
+      date_effet: "2026-07-01",
+      taux_exoneration_avant: 0.5,
+      taux_exoneration_a_partir: 0.25,
+      source: {
+        url: "https://entreprendre.service-public.gouv.fr/actualites/A18795",
+        decret: "Décret n° 2026-69 du 6 février 2026",
+      },
+      last_review: "2026-10-23",
+    });
+    expect(baremes.micro).not.toHaveProperty("acre_reduction");
   });
 });

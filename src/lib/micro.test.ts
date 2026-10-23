@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import { computeMicro } from "./micro";
-import { baremes } from "./baremes";
 
 describe("computeMicro — cotisations forfaitaires par activité", () => {
   it("prestations de services BIC à 21,2 %", () => {
@@ -33,13 +32,59 @@ describe("computeMicro — cotisations forfaitaires par activité", () => {
   });
 });
 
-describe("computeMicro — ACRE première année", () => {
-  it("réduit le taux de 50 % quand l'ACRE est activée", () => {
-    const r = computeMicro({ caEncaisse: 50000, activite: "prestations_services_bic", acre: true });
-    expect(r.taux).toBe(0.212 * baremes.micro.acre_reduction);
+describe("computeMicro - dated ACRE exemption", () => {
+  it("charges 75% of the full rate for a creation or takeover on or after 2026-07-01", () => {
+    const input = {
+      caEncaisse: 50000,
+      activite: "prestations_services_bic" as const,
+      acre: true,
+      periodeCreation: "a_partir_2026_07_01" as const,
+    };
+    const r = computeMicro(input);
+    expect(r.taux).toBe(0.212 * 0.75);
+    expect(r.acreApplique).toBe(true);
+    expect(r.cotisations).toBe(7950);
+    expect(r.net).toBe(42050);
+  });
+
+  it("charges 50% of the full rate for a creation or takeover before 2026-07-01", () => {
+    const input = {
+      caEncaisse: 50000,
+      activite: "prestations_services_bic" as const,
+      acre: true,
+      periodeCreation: "avant_2026_07_01" as const,
+    };
+    const r = computeMicro(input);
+    expect(r.taux).toBe(0.212 * 0.5);
     expect(r.acreApplique).toBe(true);
     expect(r.cotisations).toBe(5300);
     expect(r.net).toBe(44700);
+  });
+
+  it("defaults to the period on or after 2026-07-01", () => {
+    const r = computeMicro({ caEncaisse: 50000, activite: "prestations_services_bic", acre: true });
+    expect(r.taux).toBe(0.159);
+    expect(r.cotisations).toBe(7950);
+  });
+
+  it.each([
+    { activite: "vente_marchandises_bic", tauxPlein: 0.123 },
+    { activite: "prestations_services_bic", tauxPlein: 0.212 },
+    { activite: "liberal_general_bnc", tauxPlein: 0.256 },
+    { activite: "liberal_cipav_bnc", tauxPlein: 0.232 },
+  ] as const)("applies the selected exemption to $activite", ({ activite, tauxPlein }) => {
+    const before = { caEncaisse: 10000, activite, acre: true, periodeCreation: "avant_2026_07_01" as const };
+    const since = { ...before, periodeCreation: "a_partir_2026_07_01" as const };
+    expect(computeMicro(before).taux).toBe(tauxPlein * 0.5);
+    expect(computeMicro(since).taux).toBe(tauxPlein * 0.75);
+    expect(computeMicro({ ...before, acre: false }).taux).toBe(tauxPlein);
+    expect(computeMicro({ ...since, acre: false }).taux).toBe(tauxPlein);
+  });
+
+  it("keeps zero turnover at zero with ACRE enabled", () => {
+    const r = computeMicro({ caEncaisse: 0, activite: "prestations_services_bic", acre: true });
+    expect(r.cotisations).toBe(0);
+    expect(r.net).toBe(0);
   });
 });
 
